@@ -5,7 +5,7 @@ Bootstrap a repo-local AI project harness with one sentence.
 This repository packages three things together:
 
 1. A Codex skill entrypoint
-2. A repo template for project-local `AGENTS.md`, specs, runbooks, and iteration docs
+2. A base harness template plus specialized template overlays
 3. A bootstrap script that writes the harness into a new project directory
 
 ## What This Is For
@@ -22,33 +22,24 @@ The harness is designed so later work can follow a consistent loop:
 6. document
 7. continue unless a human gate is hit
 
-## What Gets Generated
+## Template Strategy
 
-The bootstrap writes a minimal project structure like this:
+The repository now uses a layered template model:
 
-```text
-AGENTS.md
-docs/specs/
-docs/runbooks/
-docs/iterations/
-docs/reviews/
-```
+- `templates/base/`: stack-agnostic harness
+- `templates/frontend-only/`: overlay for pure frontend projects
+- `templates/frontend-fastapi/`: overlay for frontend + FastAPI projects
+
+Bootstrap logic always copies `base` first, then applies a specialized overlay when one is selected.
 
 ## Default Behavior
 
-This version is stack-agnostic by default.
+This repo is still stack-agnostic by default.
 
-- If you specify a tech stack, it writes that stack into the generated docs.
-- If you do not specify a tech stack, it writes `待确认`.
-- It does not yet scaffold framework-specific runtime code.
-- It is meant to initialize the operating contract first, then let later implementation follow that contract.
-
-So these are all valid:
-
-- pure frontend
-- frontend + FastAPI
-- AI product with Python backend
-- generic web app with stack undecided
+- If the user intent clearly says pure frontend, it selects `frontend-only`
+- If the user intent clearly says FastAPI or Python backend, it selects `frontend-fastapi`
+- If the stack is unclear, it falls back to `base`
+- The user should not need to remember a template flag in normal conversations
 
 ## Quick Start
 
@@ -58,8 +49,8 @@ If installed in Codex skills:
 
 ```text
 使用 $project-harness-bootstrap 在 E:\workspace\Projects\my-app 初始化一个新项目：
-项目名是 My App，目标是做一个给内容创作者使用的 AI 工作台，
-第一版先完成登录、项目创建、内容生成与基础发布，技术栈优先 Next.js + Supabase。
+项目名是 My App，目标是做一个前端加 FastAPI 的 AI 工具，
+第一版先完成上传、处理和结果展示。
 ```
 
 ### 2. Or run the script directly
@@ -68,21 +59,48 @@ If installed in Codex skills:
 node scripts/init-ai-harness.mjs `
   --project-root "E:\workspace\Projects\my-app" `
   --project-name "My App" `
-  --goal "做一个给内容创作者使用的 AI 工作台" `
-  --scope "第一版先完成登录、项目创建、内容生成与基础发布" `
-  --target-user "内容创作者" `
-  --stack "Next.js + Supabase" `
-  --deploy-target "待确认"
+  --goal "做一个前端加 FastAPI 的 AI 工具" `
+  --scope "第一版先完成上传、处理和结果展示" `
+  --stack "React + FastAPI"
+```
+
+Manual override remains available when needed:
+
+```powershell
+node scripts/init-ai-harness.mjs `
+  --project-root "E:\workspace\Projects\my-app" `
+  --project-name "My App" `
+  --goal "做一个纯前端官网" `
+  --scope "第一版完成首页和表单" `
+  --template "frontend-only"
 ```
 
 ## Repository Layout
 
 - `SKILL.md`: thin skill entrypoint
 - `agents/openai.yaml`: UI metadata for the skill
-- `docs/`: methodology and usage docs
-- `templates/project-harness-repo/`: generated project template
+- `docs/`: methodology and design docs
+- `templates/base/`: shared harness files
+- `templates/frontend-only/`: frontend-only overlay
+- `templates/frontend-fastapi/`: frontend-fastapi overlay
 - `scripts/init-ai-harness.mjs`: bootstrap script
 - `scripts/test-init-ai-harness.mjs`: smoke test
+
+## FastAPI Template Notes
+
+The `frontend-fastapi` template includes:
+
+- frontend placeholder directory
+- backend FastAPI scaffold
+- Python environment bootstrap script
+- request and startup logging
+- minimal comments at key boundaries
+
+Python environment preference:
+
+1. `conda`
+2. `uv`
+3. fallback to documenting `待确认`
 
 ## Verification
 
@@ -91,16 +109,3 @@ Run:
 ```powershell
 node scripts/test-init-ai-harness.mjs
 ```
-
-## Current Limitation
-
-This repo initializes the harness and project operating contract.
-
-It does not yet generate framework-specific app code for stacks like:
-
-- pure frontend SPA
-- Next.js fullstack
-- FastAPI backend
-- Next.js + FastAPI split architecture
-
-That can be added later as specialized templates layered on top of this base harness.
