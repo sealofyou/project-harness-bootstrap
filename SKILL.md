@@ -1,6 +1,6 @@
 ---
 name: project-harness-bootstrap
-description: Use when starting a brand-new software, website, or AI product project and wanting one sentence to initialize a repo-local harness with AGENTS.md, specs, testing strategy, deployment runbooks, iteration docs, and template-aware scaffolding before implementation begins.
+description: Use when starting a brand-new software, website, or AI product project and wanting one sentence to initialize a repo-local harness with AGENTS.md, specs, testing strategy, deployment runbooks, iteration docs, and project-shape-aware organization before implementation begins.
 ---
 
 # Project Harness Bootstrap
@@ -9,7 +9,7 @@ description: Use when starting a brand-new software, website, or AI product proj
 
 Use this skill to bootstrap a new project before implementation starts.
 
-The first goal is to create the repo-local harness. If the user intent clearly points to a pure-frontend project or a frontend-plus-FastAPI project, also apply the matching specialized template automatically.
+The first goal is to create the repo-local harness and project system of record. This skill is for organization first. It should not hard-lock future work into a fixed framework unless the user has already made that choice clear.
 
 ## Canonical Sources
 
@@ -43,15 +43,17 @@ Optional:
 
 If some inputs are missing, do not block bootstrap. Use low-risk defaults and write `待确认` into generated docs.
 
-## Template Selection
+## Project-Shape Selection
 
-Default to intent-based selection. Do not require the user to remember a template flag.
+Project-shape overlays are optional organizing aids.
 
-- Pure frontend intent -> `frontend-only`
-- Frontend + FastAPI / Python backend intent -> `frontend-fastapi`
-- Unclear stack intent -> `base`
+- Pure frontend shape can use `frontend-only`
+- Frontend + FastAPI / Python backend shape can use `frontend-fastapi`
+- Unclear shape should stay on `base`
 
-Only use an explicit `--template` override when the caller truly needs manual control.
+Do not infer a concrete frontend framework such as `React`, `Vue`, `Next.js`, or plain three-piece frontend unless the current user request supports that choice.
+
+Only use an explicit `--template` override when manual control is truly needed.
 
 ## Bootstrap Workflow
 
@@ -70,7 +72,7 @@ Resolve `<SKILL_DIR>` as the directory containing this `SKILL.md`.
 6. Tell the user:
    - what was created
    - which assumptions were used
-   - which template was selected
+   - which project-shape overlay, if any, was selected
    - what the next implementation step is
 7. For all later implementation in that repo, follow the generated `AGENTS.md` and spec files as the project system of record.
 
@@ -79,7 +81,8 @@ Resolve `<SKILL_DIR>` as the directory containing this `SKILL.md`.
 - Do not start implementation before the harness exists unless the user explicitly says to skip initialization.
 - Do not ask step-by-step permission for routine scaffolding.
 - Do not leave missing fields blank when `待确认` is more informative.
-- Do not ask the user to choose a template when the intent already makes the choice obvious.
+- Do not ask the user to choose a template when the project shape is already obvious.
+- Do not silently hard-code a framework choice when the user has only described the project at a higher level.
 
 ## Handoff Rule
 
@@ -96,6 +99,6 @@ After bootstrap completes, future work in that repo should begin by reading:
 
 ```text
 使用 $project-harness-bootstrap 在 E:\workspace\Projects\my-app 初始化一个新项目：
-项目名是 My App，目标是做一个前端加 FastAPI 的 AI 工具，
+项目名是 My App，目标是做一个 AI 工具，
 第一版先完成上传、处理和结果展示。
 ```
