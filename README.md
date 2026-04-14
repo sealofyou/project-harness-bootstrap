@@ -39,6 +39,8 @@ Its main job is to:
 - establish testing, verification, and writeback rules
 - preserve room for stack decisions to be made per project
 
+If the project is being prepared for a specific person, collaborator, or account owner, that collaboration style should come from that person's own local docs rather than an unrelated public example.
+
 ## Template Strategy
 
 The repository uses a layered model:
@@ -103,6 +105,20 @@ node scripts/init-ai-harness.mjs `
 - `templates/frontend-fastapi/`: optional project-shape overlay
 - `scripts/init-ai-harness.mjs`: bootstrap script
 - `scripts/test-init-ai-harness.mjs`: smoke test
+
+## Claude And Codex
+
+This repo can be used for both `Codex` and `Claude Code`.
+
+The recommended split is:
+
+- `AGENTS.md` for Codex-facing entry rules
+- `CLAUDE.md` for Claude-facing entry rules
+- `docs/specs/`, `docs/runbooks/`, `docs/iterations/`, and `docs/reviews/` as the shared fact layer
+
+See:
+
+- `docs/Claude-Codex-双配置适配说明-v1.md`
 
 ## Current Overlay Notes
 

@@ -11,6 +11,8 @@ Use this skill to bootstrap a new project before implementation starts.
 
 The first goal is to create the repo-local harness and project system of record. This skill is for organization first. It should not hard-lock future work into a fixed framework unless the user has already made that choice clear.
 
+If the project is for a specific person or operating style, derive that style from that person's own local docs and current request, not from an unrelated public example.
+
 ## Canonical Sources
 
 Treat these repository paths as canonical:
@@ -89,11 +91,12 @@ Resolve `<SKILL_DIR>` as the directory containing this `SKILL.md`.
 After bootstrap completes, future work in that repo should begin by reading:
 
 1. `AGENTS.md`
-2. `docs/specs/01-项目启动卡.md`
-3. `docs/specs/02-MVP范围与非目标.md`
-4. `docs/specs/03-验收标准.md`
-5. `docs/specs/04-人工闸门.md`
-6. `docs/specs/05-测试与验证策略.md`
+2. `CLAUDE.md`
+3. `docs/specs/01-项目启动卡.md`
+4. `docs/specs/02-MVP范围与非目标.md`
+5. `docs/specs/03-验收标准.md`
+6. `docs/specs/04-人工闸门.md`
+7. `docs/specs/05-测试与验证策略.md`
 
 ## Example Invocation
 

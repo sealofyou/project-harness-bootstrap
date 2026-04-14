@@ -43,6 +43,7 @@ async function testBaseTemplate(tempRoot) {
   ]);
 
   assert.equal(await fileExists(path.join(projectRoot, 'AGENTS.md')), true);
+  assert.equal(await fileExists(path.join(projectRoot, 'CLAUDE.md')), true);
   assert.equal(await fileExists(path.join(projectRoot, 'frontend')), false);
   assert.equal(await fileExists(path.join(projectRoot, 'backend')), false);
 }
