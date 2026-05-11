@@ -70,13 +70,16 @@ node "<SKILL_DIR>\scripts\init-ai-harness.mjs" --project-root "<PROJECT_ROOT>" -
 Resolve `<SKILL_DIR>` as the directory containing this `SKILL.md`.
 
 4. Read the generated `AGENTS.md` and `docs/specs/` files.
-5. Backfill any additional information already present in the user request.
-6. Tell the user:
+5. Read `docs/prompts/00-提示词索引.md` and `docs/prompts/05-启动后交互契约.md`.
+6. Backfill any additional information already present in the user request.
+7. Tell the user:
    - what was created
    - which assumptions were used
    - which project-shape overlay, if any, was selected
-   - what the next implementation step is
-7. For all later implementation in that repo, follow the generated `AGENTS.md` and spec files as the project system of record.
+   - which facts are confirmed
+   - which facts are still `待确认`
+8. Unless the user explicitly asked for scaffolding only, immediately ask the first most important product question from `docs/prompts/05-启动后交互契约.md`. Do not stop at file creation.
+9. For all later implementation in that repo, follow the generated `AGENTS.md` and spec files as the project system of record.
 
 ## Guardrails
 
@@ -85,6 +88,7 @@ Resolve `<SKILL_DIR>` as the directory containing this `SKILL.md`.
 - Do not leave missing fields blank when `待确认` is more informative.
 - Do not ask the user to choose a template when the project shape is already obvious.
 - Do not silently hard-code a framework choice when the user has only described the project at a higher level.
+- Do not treat bootstrap completion as task completion when key project facts remain `待确认`.
 
 ## Handoff Rule
 
@@ -97,6 +101,8 @@ After bootstrap completes, future work in that repo should begin by reading:
 5. `docs/specs/03-验收标准.md`
 6. `docs/specs/04-人工闸门.md`
 7. `docs/specs/05-测试与验证策略.md`
+8. `docs/prompts/00-提示词索引.md`
+9. `docs/prompts/05-启动后交互契约.md`
 
 ## Example Invocation
 

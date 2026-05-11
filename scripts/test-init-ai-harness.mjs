@@ -28,6 +28,25 @@ async function readUtf8(file) {
   return fs.readFile(file, 'utf8');
 }
 
+async function assertPromptFiles(projectRoot) {
+  const promptRoot = path.join(projectRoot, 'docs', 'prompts');
+  const expectedFiles = [
+    '00-提示词索引.md',
+    '05-启动后交互契约.md',
+    '10-系统-默认协作流程.md',
+    '20-产品-需求深访与PRD.md',
+    '30-前端-设计与实现.md',
+    '40-后端-接口与数据.md',
+    '50-Git-仓库维护.md',
+    '60-测试-交互视觉与验收.md',
+    '70-协作-远程仓库与Linear.md',
+  ];
+
+  for (const fileName of expectedFiles) {
+    assert.equal(await fileExists(path.join(promptRoot, fileName)), true);
+  }
+}
+
 async function testBaseTemplate(tempRoot) {
   const projectRoot = path.join(tempRoot, 'base-project');
 
@@ -44,8 +63,19 @@ async function testBaseTemplate(tempRoot) {
 
   assert.equal(await fileExists(path.join(projectRoot, 'AGENTS.md')), true);
   assert.equal(await fileExists(path.join(projectRoot, 'CLAUDE.md')), true);
+  await assertPromptFiles(projectRoot);
   assert.equal(await fileExists(path.join(projectRoot, 'frontend')), false);
   assert.equal(await fileExists(path.join(projectRoot, 'backend')), false);
+
+  const agents = await readUtf8(path.join(projectRoot, 'AGENTS.md'));
+  assert.match(agents, /docs\/prompts\/00-提示词索引\.md/);
+  assert.match(agents, /05-启动后交互契约/);
+
+  const startupPrompt = await readUtf8(path.join(projectRoot, 'docs', 'prompts', '05-启动后交互契约.md'));
+  assert.match(startupPrompt, /不要初始化完成后直接结束/);
+
+  const testingStrategy = await readUtf8(path.join(projectRoot, 'docs', 'specs', '05-测试与验证策略.md'));
+  assert.match(testingStrategy, /视觉美观度验证/);
 }
 
 async function testFrontendOnlyTemplate(tempRoot) {

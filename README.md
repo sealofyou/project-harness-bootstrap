@@ -19,12 +19,14 @@ Use this when you want a new project to start with a stable AI execution contrac
 The harness is designed so later work can follow a consistent loop:
 
 1. initialize
-2. decompose
-3. implement
-4. test
-5. verify
-6. document
-7. continue unless a human gate is hit
+2. start the first interaction
+3. clarify the product shape
+4. decompose
+5. implement
+6. test
+7. verify
+8. document
+9. continue unless a human gate is hit
 
 ## What This Is Not
 
@@ -61,6 +63,8 @@ This repo is stack-agnostic by default.
 - If the user has already made the project shape clear, an overlay can be used to organize that shape
 - Framework and library choices should still follow the current project request, not a repo-level default
 - The user should not need to remember a template flag in normal conversations
+
+After bootstrap, the agent should not stop at "files created" if key project facts are still unknown. It should read the generated prompt index and startup interaction contract, list confirmed versus `待确认` facts, then ask the first most important product question.
 
 ## Quick Start
 
@@ -119,6 +123,7 @@ The recommended split is:
 See:
 
 - `docs/Claude-Codex-双配置适配说明-v1.md`
+- `docs/runbooks/git-sync-and-contribution.md`
 
 ## Current Overlay Notes
 
