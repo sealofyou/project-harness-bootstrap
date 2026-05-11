@@ -80,6 +80,10 @@ async function testBaseTemplate(tempRoot) {
   const startupPrompt = await readUtf8(path.join(projectRoot, 'docs', 'prompts', '05-启动后交互契约.md'));
   assert.match(startupPrompt, /不要初始化完成后直接结束/);
 
+  const gitPrompt = await readUtf8(path.join(projectRoot, 'docs', 'prompts', '50-Git-仓库维护.md'));
+  assert.match(gitPrompt, /多 Agent 并行开发规则/);
+  assert.match(gitPrompt, /每个任务独立 worktree/);
+
   const testingStrategy = await readUtf8(path.join(projectRoot, 'docs', 'specs', '05-测试与验证策略.md'));
   assert.match(testingStrategy, /视觉美观度验证/);
 }
