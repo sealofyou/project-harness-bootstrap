@@ -35,15 +35,21 @@ git commit
 git push origin main
 ```
 
-提交信息遵守 Lore commit protocol。示例：
+提交标题必须使用中文 Conventional Commit：
 
 ```text
-Make project bootstrap continue into product clarification
+feat: 增加启动后交互契约
+fix: 修正初始化后不追问的问题
+docs: 补充多电脑同步说明
+test: 覆盖提示词模板生成
+```
 
-The harness already generated prompt assets, but bootstrap completion could still
-stop at file creation. This records a startup interaction contract so newly
-created projects enter confirmed-vs-unknown review and ask the first product
-question before implementation.
+正文可以继续保留 Lore 风格的结构化信息，但标题不要再用纯英文句子。示例：
+
+```text
+feat: 增加启动后交互契约
+
+初始化脚本已经能生成提示词资产，但生成完成后仍可能停在“文件已创建”，不会主动进入产品澄清。这次补充启动后交互契约，让新项目先列出已确认和待确认信息，再问第一个关键产品问题。
 
 Constraint: Startup behavior must remain stack-agnostic
 Confidence: high
@@ -107,4 +113,3 @@ git diff --stat
 - 不要两台电脑同时改同一个提示词文件。
 - 临时想法先放本地笔记或新草稿文件，不要直接改系统提示词。
 - 如果发现某条规则已经存在，只补充缺口，不重复写第二遍。
-
