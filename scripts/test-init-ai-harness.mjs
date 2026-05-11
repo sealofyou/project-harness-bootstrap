@@ -32,6 +32,7 @@ async function assertPromptFiles(projectRoot) {
   const promptRoot = path.join(projectRoot, 'docs', 'prompts');
   const expectedFiles = [
     '00-提示词索引.md',
+    '01-系统级规则.md',
     '05-启动后交互契约.md',
     '10-系统-默认协作流程.md',
     '20-产品-需求深访与PRD.md',
@@ -69,7 +70,12 @@ async function testBaseTemplate(tempRoot) {
 
   const agents = await readUtf8(path.join(projectRoot, 'AGENTS.md'));
   assert.match(agents, /docs\/prompts\/00-提示词索引\.md/);
+  assert.match(agents, /01-系统级规则/);
   assert.match(agents, /05-启动后交互契约/);
+
+  const systemRules = await readUtf8(path.join(projectRoot, 'docs', 'prompts', '01-系统级规则.md'));
+  assert.match(systemRules, /默认全部使用中文/);
+  assert.match(systemRules, /有问题必须追问/);
 
   const startupPrompt = await readUtf8(path.join(projectRoot, 'docs', 'prompts', '05-启动后交互契约.md'));
   assert.match(startupPrompt, /不要初始化完成后直接结束/);
