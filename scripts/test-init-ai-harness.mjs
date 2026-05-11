@@ -37,6 +37,7 @@ async function assertPromptFiles(projectRoot) {
     '10-系统-默认协作流程.md',
     '20-产品-需求深访与PRD.md',
     '30-前端-设计与实现.md',
+    '31-前端-设计系统与风格.md',
     '40-后端-接口与数据.md',
     '50-Git-仓库维护.md',
     '60-测试-交互视觉与验收.md',
@@ -72,6 +73,7 @@ async function testBaseTemplate(tempRoot) {
   assert.match(agents, /docs\/prompts\/00-提示词索引\.md/);
   assert.match(agents, /01-系统级规则/);
   assert.match(agents, /05-启动后交互契约/);
+  assert.match(agents, /31-前端-设计系统与风格/);
 
   const systemRules = await readUtf8(path.join(projectRoot, 'docs', 'prompts', '01-系统级规则.md'));
   assert.match(systemRules, /默认全部使用中文/);
@@ -83,6 +85,17 @@ async function testBaseTemplate(tempRoot) {
   const gitPrompt = await readUtf8(path.join(projectRoot, 'docs', 'prompts', '50-Git-仓库维护.md'));
   assert.match(gitPrompt, /多 Agent 并行开发规则/);
   assert.match(gitPrompt, /每个任务独立 worktree/);
+
+  const frontendPrompt = await readUtf8(path.join(projectRoot, 'docs', 'prompts', '30-前端-设计与实现.md'));
+  assert.match(frontendPrompt, /不要跳过设计判断直接实现页面/);
+  assert.match(frontendPrompt, /31-前端-设计系统与风格\.md/);
+
+  const workflowPrompt = await readUtf8(path.join(projectRoot, 'docs', 'prompts', '10-系统-默认协作流程.md'));
+  assert.match(workflowPrompt, /前端设计系统、视觉风格、页面结构、设计验收标准不清/);
+
+  const frontendDesignPrompt = await readUtf8(path.join(projectRoot, 'docs', 'prompts', '31-前端-设计系统与风格.md'));
+  assert.match(frontendDesignPrompt, /前端设计交接卡/);
+  assert.match(frontendDesignPrompt, /视觉验收清单/);
 
   const testingStrategy = await readUtf8(path.join(projectRoot, 'docs', 'specs', '05-测试与验证策略.md'));
   assert.match(testingStrategy, /视觉美观度验证/);

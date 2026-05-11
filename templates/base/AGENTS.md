@@ -44,6 +44,7 @@
 - 启动后交互：`docs/prompts/05-启动后交互契约.md`
 - 产品 / PRD：`docs/prompts/20-产品-需求深访与PRD.md`
 - 前端 / UI / 交互实现：`docs/prompts/30-前端-设计与实现.md`
+- 前端设计系统 / 风格：`docs/prompts/31-前端-设计系统与风格.md`
 - 后端 / API / 数据：`docs/prompts/40-后端-接口与数据.md`
 - Git / 分支 / 提交 / PR：`docs/prompts/50-Git-仓库维护.md`
 - 测试 / 交互 / 视觉 / 美观度验收：`docs/prompts/60-测试-交互视觉与验收.md`
