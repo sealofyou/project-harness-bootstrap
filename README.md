@@ -247,7 +247,7 @@ Agent 应该：
 使用提示词：
 
 ```text
-templates/base/docs/prompts/30-前端-设计与实现.md
+templates/base/docs/prompts/32-前端-页面实现与状态.md
 ```
 
 Agent 应该：
@@ -408,6 +408,7 @@ templates/base/docs/prompts/
 - `20-产品-需求深访与PRD.md`
 - `30-前端-设计与实现.md`
 - `31-前端-设计系统与风格.md`
+- `32-前端-页面实现与状态.md`
 - `40-后端-接口与数据.md`
 - `50-Git-仓库维护.md`
 - `60-测试-交互视觉与验收.md`

@@ -38,7 +38,7 @@ description: Use when starting a brand-new software, website, AI product, or exi
 
 - 产品 / PRD：`templates/base/docs/prompts/20-产品-需求深访与PRD.md`
 - 前端设计：`templates/base/docs/prompts/31-前端-设计系统与风格.md`
-- 前端实现：`templates/base/docs/prompts/30-前端-设计与实现.md`
+- 前端实现：`templates/base/docs/prompts/32-前端-页面实现与状态.md`
 - 后端：`templates/base/docs/prompts/40-后端-接口与数据.md`
 - Git：`templates/base/docs/prompts/50-Git-仓库维护.md`
 - 测试：`templates/base/docs/prompts/60-测试-交互视觉与验收.md`
