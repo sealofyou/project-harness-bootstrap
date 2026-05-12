@@ -1,4 +1,4 @@
 interface:
-  display_name: "Project Harness Bootstrap"
-  short_description: "Initialize an AI project harness with repo templates"
-  default_prompt: "Use project-harness-bootstrap to initialize a repo-local harness for a new project"
+  display_name: "多 Agent 项目启动模板"
+  short_description: "通过 Agent 对话为新项目建立规则、事实层、提示词资产和协作流程"
+  default_prompt: "参考 project-harness-bootstrap，帮我为新项目建立多 Agent 协作式项目 Harness，并继续追问最关键的问题"

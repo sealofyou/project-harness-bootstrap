@@ -1,146 +1,136 @@
-# project-harness-bootstrap
+# 多 Agent 项目启动模板
 
-Bootstrap a repo-local AI project harness with one sentence.
+这是一个面向 Agent 协作的新项目启动模板。
 
-This repository is for organizing how a new project gets started, not for forcing every future project into a fixed technical stack.
+它的重点不是提供一个命令行脚本，也不是生成固定技术栈的工程骨架，而是给一个新项目先放入稳定的协作规则、事实文档、提示词资产和验收流程，让后续可以通过主 Agent 与多个子 Agent 逐步把项目做出来。
 
-## What It Does
+## 这个仓库解决什么问题
 
-It packages three things together:
+很多 AI 辅助开发项目容易卡在三个地方：
 
-1. A Codex skill entrypoint
-2. A base harness template plus a small set of optional project-shape overlays
-3. A bootstrap script that writes the harness into a new project directory
+- 需求只存在聊天记录里，换一次会话就丢失。
+- 前端、后端、测试、Git 混在同一个上下文里，越做越乱。
+- Agent 初始化项目后只说“文件已创建”，没有继续追问、澄清和推进。
 
-## What This Is For
+这个仓库希望解决的是这些协作问题。
 
-Use this when you want a new project to start with a stable AI execution contract instead of relying on ad-hoc chat history.
+它提供一套项目内默认规则，让 Agent 进入一个新项目后知道：
 
-The harness is designed so later work can follow a consistent loop:
+- 先读哪些事实文档。
+- 哪些信息必须写成 `待确认`。
+- 什么时候进入产品深访。
+- 什么时候切到前端设计、前端实现、后端、测试或 Git。
+- 主 Agent 如何调度子 Agent。
+- 结果如何验证、回写和提交。
 
-1. initialize
-2. start the first interaction
-3. clarify the product shape
-4. decompose
-5. implement
-6. test
-7. verify
-8. document
-9. continue unless a human gate is hit
+## 推荐使用方式
 
-## What This Is Not
+推荐方式是让 Agent 读取本仓库，然后通过对话帮你把模板整理进目标项目。
 
-This is not a hard-coded framework generator.
-
-It should not silently decide that all frontend projects must use `React`, `Vue`, `Next.js`, plain HTML/CSS/JS, or any other specific stack unless the user has already made that choice clear in the current project request.
-
-Its main job is to:
-
-- organize the project brief
-- create the system-of-record docs
-- establish testing, verification, and writeback rules
-- preserve room for stack decisions to be made per project
-
-If the project is being prepared for a specific person, collaborator, or account owner, that collaboration style should come from that person's own local docs rather than an unrelated public example.
-
-## Template Strategy
-
-The repository uses a layered model:
-
-- `templates/base/`: stack-agnostic harness
-- `templates/frontend-only/`: optional overlay for pure frontend project shape
-- `templates/frontend-fastapi/`: optional overlay for frontend + FastAPI project shape
-
-Bootstrap logic always copies `base` first.
-
-An overlay is only an organizing aid. It is not a promise that future work is locked to one framework forever.
-
-## Default Behavior
-
-This repo is stack-agnostic by default.
-
-- If the stack is unclear, it stays generic and records `待确认`
-- If the user has already made the project shape clear, an overlay can be used to organize that shape
-- Framework and library choices should still follow the current project request, not a repo-level default
-- The user should not need to remember a template flag in normal conversations
-
-After bootstrap, the agent should not stop at "files created" if key project facts are still unknown. It should read the generated prompt index and startup interaction contract, list confirmed versus `待确认` facts, then ask the first most important product question.
-
-## Quick Start
-
-### 1. Use the skill
-
-If installed in Codex skills:
+你可以这样说：
 
 ```text
-使用 $project-harness-bootstrap 在 E:\workspace\Projects\my-app 初始化一个新项目：
-项目名是 My App，目标是做一个 AI 工具，
-第一版先完成上传、处理和结果展示。
+参考 project-harness-bootstrap，
+帮我在这个新项目里建立一套项目协作规则和提示词资产。
+
+目标项目是：<项目路径或 GitHub 仓库链接>
+项目目标是：<一句话描述>
+第一版范围是：<你现在最想先完成什么>
+
+请先初始化项目事实层，然后继续追问我最关键的问题。
 ```
 
-### 2. Or run the script directly
+Agent 应该做的是：
 
-```powershell
-node scripts/init-ai-harness.mjs `
-  --project-root "E:\workspace\Projects\my-app" `
-  --project-name "My App" `
-  --goal "做一个 AI 工具" `
-  --scope "第一版先完成上传、处理和结果展示"
+1. 读取本仓库根目录的 `AGENTS.md`、`CLAUDE.md` 和 `docs/`。
+2. 读取 `templates/base/` 中的默认项目规则。
+3. 按目标项目的实际情况复制或改写规则文档。
+4. 把未知信息写成 `待确认`。
+5. 继续进入产品深访，而不是停在“初始化完成”。
+
+## 核心目录
+
+- `AGENTS.md`：Codex / Agent 使用的仓库级协作规则。
+- `CLAUDE.md`：Claude Code 使用的仓库级协作规则。
+- `SKILL.md`：把本仓库作为 Skill 使用时的入口说明。
+- `docs/`：设计说明、路线图、协作手册和历史决策。
+- `templates/base/`：推荐复制进新项目的基础规则和提示词资产。
+- `templates/frontend-only/`：纯前端项目的可选补充模板。
+- `templates/frontend-fastapi/`：前端加 FastAPI 项目的可选补充模板。
+- `agents/openai.yaml`：Agent UI 元数据。
+
+## 默认项目结构
+
+一个目标项目通常会获得这些文件：
+
+```text
+AGENTS.md
+CLAUDE.md
+docs/
+  specs/
+  prompts/
+  runbooks/
+  iterations/
+  reviews/
 ```
 
-Manual override remains available when it actually helps:
+其中：
 
-```powershell
-node scripts/init-ai-harness.mjs `
-  --project-root "E:\workspace\Projects\my-app" `
-  --project-name "My App" `
-  --goal "做一个前端加 FastAPI 的项目" `
-  --scope "第一版先完成上传、处理和结果展示" `
-  --template "frontend-fastapi"
+- `docs/specs/` 记录项目事实、MVP 范围、验收标准和人工闸门。
+- `docs/prompts/` 保存产品、前端、后端、Git、测试、协作等专门提示词。
+- `docs/runbooks/` 保存运行、部署、同步和协作说明。
+- `docs/iterations/` 保存每轮迭代记录。
+- `docs/reviews/` 保存复盘、验收和回写记录。
+
+## 多 Agent 分工
+
+默认不希望一个 Agent 在同一段上下文里同时做所有事情。
+
+推荐分工：
+
+- 主 Agent：理解目标、维护事实层、拆任务、协调子 Agent、集成结果、最终验证。
+- 产品 Agent：只负责需求深访、PRD、范围和验收标准。
+- 前端设计 Agent：只负责设计系统、页面结构、视觉风格和设计验收标准。
+- 前端实现 Agent：只负责页面、组件、状态和交互实现。
+- 后端 Agent：只负责 API、数据、权限、服务边界和错误处理。
+- 测试 Agent：只负责交互点击、普通用户体验、视觉美观度和回归验收。
+- Git Agent：只负责提交边界、提交信息、PR 描述和同步策略。
+
+主 Agent 要保留最终控制权。子 Agent 不应该自行扩大范围、提交、推送或改全局规则。
+
+## 当前提示词资产
+
+基础模板中的提示词位于：
+
+```text
+templates/base/docs/prompts/
 ```
 
-## Repository Layout
+当前主要包括：
 
-- `SKILL.md`: thin skill entrypoint
-- `agents/openai.yaml`: UI metadata for the skill
-- `docs/`: methodology and design docs
-- `templates/base/`: shared harness files
-- `templates/frontend-only/`: optional project-shape overlay
-- `templates/frontend-fastapi/`: optional project-shape overlay
-- `scripts/init-ai-harness.mjs`: bootstrap script
-- `scripts/test-init-ai-harness.mjs`: smoke test
+- `01-系统级规则.md`
+- `05-启动后交互契约.md`
+- `10-系统-默认协作流程.md`
+- `20-产品-需求深访与PRD.md`
+- `30-前端-设计与实现.md`
+- `31-前端-设计系统与风格.md`
+- `40-后端-接口与数据.md`
+- `50-Git-仓库维护.md`
+- `60-测试-交互视觉与验收.md`
+- `70-协作-远程仓库与Linear.md`
 
-## Claude And Codex
+## 当前状态
 
-This repo can be used for both `Codex` and `Claude Code`.
+这个仓库还在整理中。
 
-The recommended split is:
+现在更重要的是把提示词、规则和协作流程打磨清楚，而不是维护一个脚本工具。后续如果确实需要自动化，可以再单独设计，但默认入口应该是 Agent 对话和项目内文档，而不是让用户记命令。
 
-- `AGENTS.md` for Codex-facing entry rules
-- `CLAUDE.md` for Claude-facing entry rules
-- `docs/specs/`, `docs/runbooks/`, `docs/iterations/`, and `docs/reviews/` as the shared fact layer
+## 下一步方向
 
-See:
+优先继续整理：
 
-- `docs/Claude-Codex-双配置适配说明-v1.md`
-- `docs/runbooks/git-sync-and-contribution.md`
-
-## Current Overlay Notes
-
-The `frontend-fastapi` overlay includes:
-
-- a frontend placeholder
-- a FastAPI-oriented backend scaffold
-- Python environment bootstrap guidance
-- request and startup logging
-- minimal comments at key boundaries
-
-This is a helper for that project shape, not a universal default for all future projects.
-
-## Verification
-
-Run:
-
-```powershell
-node scripts/test-init-ai-harness.mjs
-```
+1. 前端设计系统与风格提示词。
+2. 前端页面实现与状态提示词。
+3. 后端接口与数据提示词。
+4. 测试验收提示词。
+5. Linear / GitHub issue / 多人协作层。

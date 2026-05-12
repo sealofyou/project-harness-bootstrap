@@ -1,113 +1,131 @@
 ---
 name: project-harness-bootstrap
-description: Use when starting a brand-new software, website, or AI product project and wanting one sentence to initialize a repo-local harness with AGENTS.md, specs, testing strategy, deployment runbooks, iteration docs, and project-shape-aware organization before implementation begins.
+description: Use when starting a brand-new software, website, AI product, or existing repo cleanup and wanting an Agent-guided project harness with AGENTS.md, CLAUDE.md, specs, prompts, runbooks, iterations, reviews, and multi-agent workflow rules before implementation begins.
 ---
 
 # Project Harness Bootstrap
 
-## Overview
+## 定位
 
-Use this skill to bootstrap a new project before implementation starts.
+这个 Skill 用来帮助用户通过 Agent 对话初始化或整理一个项目。
 
-The first goal is to create the repo-local harness and project system of record. This skill is for organization first. It should not hard-lock future work into a fixed framework unless the user has already made that choice clear.
+它不要求用户运行脚本，也不把新项目固定到某个技术栈。它的核心任务是让目标项目先拥有稳定的事实层、协作规则、提示词资产和验收流程，然后继续通过对话把需求、设计、实现和测试推进下去。
 
-If the project is for a specific person or operating style, derive that style from that person's own local docs and current request, not from an unrelated public example.
+## 适用场景
 
-## Canonical Sources
+当用户说类似这些话时使用：
 
-Treat these repository paths as canonical:
+- 初始化一个新项目。
+- 整理一个已有仓库，让它更适合 Agent 协作。
+- 想让以后开发新项目更省力。
+- 想把产品、前端、后端、Git、测试提示词沉淀到项目里。
+- 想用主 Agent 调度多个子 Agent 推进项目。
 
-- `docs/AI项目-Harness-总设计-v1.md`
-- `docs/AI项目-Harness-仓库模板规范-v1.md`
-- `docs/AI项目-Harness-一句话启动说明-v1.md`
-- `templates/base/`
-- `templates/frontend-only/`
-- `templates/frontend-fastapi/`
-- `scripts/init-ai-harness.mjs`
+## 先读这些文件
 
-If generated files and bundled docs disagree, update generated files to match the bundled docs.
+在本仓库中先读：
 
-## Required Inputs
+1. `README.md`
+2. `AGENTS.md`
+3. `CLAUDE.md`
+4. `docs/plans/2026-05-11-提示词优化路线图.md`
+5. `templates/base/AGENTS.md`
+6. `templates/base/CLAUDE.md`
+7. `templates/base/docs/prompts/00-提示词索引.md`
+8. `templates/base/docs/prompts/05-启动后交互契约.md`
 
-Try to extract these from the user's message first:
+如果任务涉及具体阶段，再读对应提示词：
 
-1. Project root
-2. Project name
-3. Project goal
-4. First-version scope
+- 产品 / PRD：`templates/base/docs/prompts/20-产品-需求深访与PRD.md`
+- 前端设计：`templates/base/docs/prompts/31-前端-设计系统与风格.md`
+- 前端实现：`templates/base/docs/prompts/30-前端-设计与实现.md`
+- 后端：`templates/base/docs/prompts/40-后端-接口与数据.md`
+- Git：`templates/base/docs/prompts/50-Git-仓库维护.md`
+- 测试：`templates/base/docs/prompts/60-测试-交互视觉与验收.md`
+- 协作 / Linear：`templates/base/docs/prompts/70-协作-远程仓库与Linear.md`
 
-Optional:
+## 对话式初始化流程
 
-1. Target user
-2. Tech stack
-3. Deploy target
-4. Deliverable type
+1. 确认目标项目位置。
+2. 读取目标项目当前目录结构和已有规则。
+3. 判断目标项目是否已经有 `AGENTS.md`、`CLAUDE.md`、`docs/specs/`、`docs/prompts/`、`docs/runbooks/`、`docs/iterations/`、`docs/reviews/`。
+4. 缺什么补什么，已有内容要保留并合并，不要粗暴覆盖。
+5. 把用户已经说清楚的信息写入目标项目文档。
+6. 不确定的信息写成 `待确认`。
+7. 初始化后读取目标项目的新规则。
+8. 列出已确认信息和待确认信息。
+9. 继续问用户一个最关键的问题。
 
-If some inputs are missing, do not block bootstrap. Use low-risk defaults and write `待确认` into generated docs.
+不要只回复“文件已创建”。
 
-## Project-Shape Selection
-
-Project-shape overlays are optional organizing aids.
-
-- Pure frontend shape can use `frontend-only`
-- Frontend + FastAPI / Python backend shape can use `frontend-fastapi`
-- Unclear shape should stay on `base`
-
-Do not infer a concrete frontend framework such as `React`, `Vue`, `Next.js`, or plain three-piece frontend unless the current user request supports that choice.
-
-Only use an explicit `--template` override when manual control is truly needed.
-
-## Bootstrap Workflow
-
-1. Confirm the target project path.
-2. Read the bundled docs listed above.
-3. Run:
-
-```powershell
-node "<SKILL_DIR>\scripts\init-ai-harness.mjs" --project-root "<PROJECT_ROOT>" --project-name "<PROJECT_NAME>" --goal "<PROJECT_GOAL>" --scope "<FIRST_VERSION_SCOPE>" --target-user "<TARGET_USER>" --stack "<TECH_STACK>" --deploy-target "<DEPLOY_TARGET>" --deliverable-type "<DELIVERABLE_TYPE>"
-```
-
-Resolve `<SKILL_DIR>` as the directory containing this `SKILL.md`.
-
-4. Read the generated `AGENTS.md` and `docs/specs/` files.
-5. Read `docs/prompts/00-提示词索引.md` and `docs/prompts/05-启动后交互契约.md`.
-6. Backfill any additional information already present in the user request.
-7. Tell the user:
-   - what was created
-   - which assumptions were used
-   - which project-shape overlay, if any, was selected
-   - which facts are confirmed
-   - which facts are still `待确认`
-8. Unless the user explicitly asked for scaffolding only, immediately ask the first most important product question from `docs/prompts/05-启动后交互契约.md`. Do not stop at file creation.
-9. For all later implementation in that repo, follow the generated `AGENTS.md` and spec files as the project system of record.
-
-## Guardrails
-
-- Do not start implementation before the harness exists unless the user explicitly says to skip initialization.
-- Do not ask step-by-step permission for routine scaffolding.
-- Do not leave missing fields blank when `待确认` is more informative.
-- Do not ask the user to choose a template when the project shape is already obvious.
-- Do not silently hard-code a framework choice when the user has only described the project at a higher level.
-- Do not treat bootstrap completion as task completion when key project facts remain `待确认`.
-
-## Handoff Rule
-
-After bootstrap completes, future work in that repo should begin by reading:
-
-1. `AGENTS.md`
-2. `CLAUDE.md`
-3. `docs/specs/01-项目启动卡.md`
-4. `docs/specs/02-MVP范围与非目标.md`
-5. `docs/specs/03-验收标准.md`
-6. `docs/specs/04-人工闸门.md`
-7. `docs/specs/05-测试与验证策略.md`
-8. `docs/prompts/00-提示词索引.md`
-9. `docs/prompts/05-启动后交互契约.md`
-
-## Example Invocation
+## 推荐生成到目标项目的结构
 
 ```text
-使用 $project-harness-bootstrap 在 E:\workspace\Projects\my-app 初始化一个新项目：
-项目名是 My App，目标是做一个 AI 工具，
-第一版先完成上传、处理和结果展示。
+AGENTS.md
+CLAUDE.md
+docs/
+  specs/
+  prompts/
+  runbooks/
+  iterations/
+  reviews/
 ```
+
+如果项目已经有自己的结构，优先融入现有结构，不强行重排。
+
+## 项目形态判断
+
+项目形态要来自用户目标和目标项目现状。
+
+可以参考：
+
+- `templates/base/`：通用项目。
+- `templates/frontend-only/`：纯前端项目。
+- `templates/frontend-fastapi/`：前端加 FastAPI 项目。
+
+但这些只是参考模板，不是技术栈默认值。
+
+不要在用户没有确认时，把项目锁定成 React、Vue、Next.js、FastAPI 或任何具体框架。
+
+## 多 Agent 使用规则
+
+主 Agent 负责整体项目控制：
+
+- 维护目标和事实层。
+- 拆分任务。
+- 分配子 Agent 职责。
+- 协调共享文件。
+- 集成结果。
+- 做最终验证。
+- 决定是否提交和推送。
+
+子 Agent 只负责单一领域：
+
+- 产品
+- 前端设计
+- 前端实现
+- 后端
+- 测试
+- Git
+- 协作
+
+子 Agent 不自行扩大范围，不自行提交推送，不替代主 Agent 做完成判断。
+
+## 完成标准
+
+一次初始化或整理完成前，至少确认：
+
+- 目标项目已有可读的 `AGENTS.md`。
+- Claude 使用场景下已有 `CLAUDE.md`。
+- 项目事实层已经存在。
+- 提示词资产已经放在稳定位置。
+- 未确认信息已经写成 `待确认`。
+- 已经提出下一步最关键问题。
+
+## 禁止事项
+
+- 不要把脚本运行作为默认入口。
+- 不要让用户自己记模板参数。
+- 不要因为模板里有某个项目形态，就默认所有项目都用它。
+- 不要覆盖目标项目已有规则。
+- 不要初始化后停止追问。

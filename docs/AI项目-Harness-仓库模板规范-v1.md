@@ -18,11 +18,13 @@
 
 ```text
 AGENTS.md
+CLAUDE.md
 docs/specs/01-项目启动卡.md
 docs/specs/02-MVP范围与非目标.md
 docs/specs/03-验收标准.md
 docs/specs/04-人工闸门.md
 docs/specs/05-测试与验证策略.md
+docs/prompts/00-提示词索引.md
 docs/runbooks/01-部署手册.md
 docs/runbooks/02-运维手册.md
 docs/iterations/ITERATION-001.md
@@ -33,6 +35,9 @@ docs/reviews/回写与复盘模板.md
 
 ### `AGENTS.md`
 负责定义本项目内所有 Agent 的总规约。
+
+### `CLAUDE.md`
+负责定义 Claude Code 进入项目时的入口规则，并与 `AGENTS.md` 共享同一事实层。
 
 ### `docs/specs/01-项目启动卡.md`
 负责记录项目目标、目标用户、交付物、阶段状态。
@@ -48,6 +53,9 @@ docs/reviews/回写与复盘模板.md
 
 ### `docs/specs/05-测试与验证策略.md`
 负责记录测试入口、验证层级、发布前最小验证集合。
+
+### `docs/prompts/00-提示词索引.md`
+负责记录产品、前端、后端、Git、测试、协作等提示词资产的调用边界。
 
 ### `docs/runbooks/01-部署手册.md`
 负责记录部署步骤、环境、回滚。
@@ -71,8 +79,8 @@ docs/reviews/回写与复盘模板.md
 
 推荐在新项目开始时执行两步：
 
-1. 用初始化脚本把仓库内 Harness 骨架落下去
-2. 让 Agent 根据用户一句话输入把关键字段回填
+1. 让主 Agent 参考本仓库模板，在目标项目中建立 Harness 骨架。
+2. 让主 Agent 根据用户的一句话输入回填关键字段，并继续追问最关键的问题。
 
 ## 六、一句话总结
 
